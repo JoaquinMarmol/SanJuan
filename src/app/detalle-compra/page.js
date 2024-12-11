@@ -149,7 +149,7 @@ const DetalleCompra = () => {
     setLoading(true);
   
     try {
-      const response = await fetch("https://digisoftware.online/api/payment-intents/", {
+      const response = await fetch("https://test.digisoftware.online/api/payment-intents/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
