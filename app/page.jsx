@@ -19,7 +19,7 @@ async function getData() {
     const subdomain = hostname.split('.')[0];
 
     const response = await fetch(
-      `https://digisoftware.online/api/organizations/${subdomain}/`
+      process.env.NEXT_PUBLIC_API_URL + `api/organizations/${subdomain}/`
     );
 
     if (!response.ok) {
@@ -77,7 +77,7 @@ export default function Page() {
     return <div>Loading...</div>;
   }
 
-  const UrlBase = "https://digisoftware.online/";
+  const UrlBase = process.env.NEXT_PUBLIC_API_URL;
   const Informacion = data.organization;
   const Eventos = data.active_events;
   const ImagenArr = data.active_images;
@@ -152,45 +152,41 @@ export default function Page() {
                 quedes afuera.
               </p>
             </div>
-              {Eventos.length > 3 ? (
-                <CarruselEvent event={Eventos} />
-              ) : (
-                <div className="relative w-full grid grid-cols-1 md:grid-cols-3 gap-8 pt-10 md:pt-10">
-                  <div className="absolute inset-0 flex justify-center">
-                    <div className="top-[14%] absolute hidden md:block h-0.5 bg-black w-full self-center"></div>
-                  </div>
-                  {Eventos.map((evento) => (
-                    <div key={evento.id} className="grid gap-8">
-                      <div className="inline-block z-10 hidden md:block">
+            {Eventos.length > 3 ? (
+              <CarruselEvent event={Eventos} />
+            ) : (
+              <div className="relative w-full grid grid-cols-1 md:grid-cols-3 gap-8 pt-10 md:pt-10">
+                <div className="absolute inset-0 flex justify-center">
+                  <div className="top-[14%] absolute hidden md:block h-0.5 bg-black w-full self-center"></div>
+                </div>
+                {Eventos.map((evento) => (
+                  <div key={evento.id} className="grid gap-8">
+                    <div className="inline-block z-10 hidden md:block">
+                      <span className="bg-[#191919] text-white py-4 px-6 rounded-xl font-bold">
+                        {formatCustomDate(evento.start_date, evento.id)}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="inline-flex z-10 md:hidden">
                         <span className="bg-[#191919] text-white py-4 px-6 rounded-xl font-bold">
                           {formatCustomDate(evento.start_date, evento.id)}
                         </span>
                       </div>
-
-                      <div>
-                        <div className="inline-flex z-10 md:hidden">
-                          <span className="bg-[#191919] text-white py-4 px-6 rounded-xl font-bold">
-                            {formatCustomDate(evento.start_date, evento.id)}
-                          </span>
-                        </div>
-                        <div className="col-span-1 bg-[#F8F8F8] rounded-md px-6 py-4">
-                          <h3 className="text-2xl font-black pb-4">
-                            {evento.name}
-                          </h3>
-                          <p className="text-gray-600 pb-4">
-                            Get ready for a night of pure euphoria as our
-                            resident DJs take you on a journey through the best
-                            electronic music. Dance the night away and
-                            experience the energy of Electro Nexus like never
-                            before.
-                          </p>
-                          <AddCart event={evento} />
-                        </div>
+                      <div className="col-span-1 bg-[#F8F8F8] rounded-md px-6 py-4">
+                        <h3 className="text-2xl font-black pb-4">
+                          {evento.name}
+                        </h3>
+                        <p className="text-gray-600 pb-4">
+                          {evento.description}
+                        </p>
+                        <AddCart event={evento} />
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}            
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="max-w-7xl m-auto p-8 sm:p-20">
@@ -298,7 +294,7 @@ export default function Page() {
                   <div className="col-span-1">
                     <h4 className="font-bold">Email</h4>
                     <p className="text-sm text-gray-600">
-                    {Contacto.email}
+                      {Contacto.email}
                     </p>
                   </div>
                   <div className="col-span-1">

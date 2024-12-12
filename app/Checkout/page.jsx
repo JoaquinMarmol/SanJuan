@@ -41,17 +41,25 @@ export default function Page() {
 
   const callApiPayment = async (updatedPaymentInfo) => {
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_PAYMENT, {
+      const response = await fetch(process.env.NEXT_PUBLIC_API_URL + "api/payment-intents/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedPaymentInfo),
       });
+
       const data = await response.json();
       console.log(data);
+
+      // Redireccionar a la URL de pago si existe en la respuesta
+      if (data.payment_url) {
+        window.location.href = data.payment_url;
+      } else {
+        console.error("No se encontró la URL de pago en la respuesta.");
+      }
     } catch (error) {
-      console.error("Error al crear la intento de pago:", error);
+      console.error("Error al crear el intento de pago:", error);
     }
   };
 

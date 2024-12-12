@@ -24,7 +24,7 @@ const AddCart = ({ event }) => {
 
   return (
     <>
-      <Button onClick={addEvent} variant="outline" className="w-full text-md">
+      <Button onClick={addEvent} variant="outline" className="w-full text-md cursor-pointer relative">
         <ShoppingCart />
         Comprar
       </Button>
