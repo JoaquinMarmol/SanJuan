@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Carrusel from "@/components/carruselGalery";
 import { Button } from "@/components/ui/button";
@@ -156,30 +157,42 @@ export default function Page() {
               <CarruselEvent event={Eventos} />
             ) : (
               <div className="relative w-full grid grid-cols-1 md:grid-cols-3 gap-8 pt-10 md:pt-10">
-                <div className="absolute inset-0 flex justify-center">
-                  <div className="top-[14%] absolute hidden md:block h-0.5 bg-black w-full self-center"></div>
-                </div>
                 {Eventos.map((evento) => (
                   <div key={evento.id} className="grid gap-8">
-                    <div className="inline-block z-10 hidden md:block">
-                      <span className="bg-[#191919] text-white py-4 px-6 rounded-xl font-bold">
+                    {/* Fecha visible en la parte superior */}
+                    <div className="inline-block hidden md:block">
+                      <div className="absolute inset-0 flex justify-center">
+                        <div className="top-[50px] z-[-2] absolute hidden md:block h-0.5 bg-black w-full self-center"></div>
+                      </div>
+                      <span className="bg-[#191919] text-white py-4 px-6 rounded-xl font-bold z-10 relative">
                         {formatCustomDate(evento.start_date, evento.id)}
                       </span>
                     </div>
 
-                    <div>
-                      <div className="inline-flex z-10 md:hidden">
+                    {/* Contenido principal del evento */}
+                    <div className="z-10">
+                      <div className="inline-flex z-20 md:hidden">
                         <span className="bg-[#191919] text-white py-4 px-6 rounded-xl font-bold">
                           {formatCustomDate(evento.start_date, evento.id)}
                         </span>
                       </div>
-                      <div className="col-span-1 bg-[#F8F8F8] rounded-md px-6 py-4">
-                        <h3 className="text-2xl font-black pb-4">
-                          {evento.name}
-                        </h3>
-                        <p className="text-gray-600 pb-4">
-                          {evento.description}
-                        </p>
+                      <div className="col-span-1 bg-[#F8F8F8] rounded-md px-4 py-4">
+                        <h3 className="text-2xl font-black pb-4">{evento.name}</h3>
+
+                        {/* Contenedor relativo para el hover */}
+                        <div className="relative group">
+                          <img
+                            src={evento.image_url}
+                            alt={evento.name}
+                            className="rounded-md"
+                          />
+                          {/* Descripción visible en hover */}
+                          <p className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80 p-3 text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md pointer-events-none">
+                            {evento.description}
+                          </p>
+                        </div>
+
+                        {/* Botón para agregar al carrito */}
                         <AddCart event={evento} />
                       </div>
                     </div>
@@ -189,7 +202,7 @@ export default function Page() {
             )}
           </div>
 
-          <div className="max-w-7xl m-auto p-8 sm:p-20">
+          {/*<div className="max-w-7xl m-auto p-8 sm:p-20">
             <div className="flex flex-col gap-5 row-start-2 items-center sm:items-start">
               <h2 className="text-5xl font-black">Interactive Experiences</h2>
               <p className="text-md text-gray-600 w-full md:w-1/2">
@@ -226,7 +239,7 @@ export default function Page() {
                 </p>
               </div>
             </div>
-          </div>
+          </div>*/}
         </>
       )}
 
@@ -267,6 +280,7 @@ export default function Page() {
 
       {ImagenArr && ImagenArr.length > 0 && (
         <div className="max-w-7xl m-auto p-8 sm:p-20">
+          <h2 className="text-5xl font-black mb-4">Eventos Anteriores</h2>
           <Carrusel imagenes={ImagenArr} urlBase={UrlBase} />
         </div>
       )}
